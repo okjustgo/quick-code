@@ -1,0 +1,25 @@
+name: Creates artifact
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+
+jobs:
+  creates-artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          cat <<'EOF' >> myartifact
+
+          echo "this is legitimate text"
+
+          EOF
+
+      - name: Upload environment variables artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: uploaded-artifact
+          path: myartifact
