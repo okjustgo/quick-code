@@ -1,0 +1,23 @@
+name: Running artifact
+on:
+  workflow_run:
+    workflows:
+      - Creates artifact
+    types:
+      - completed
+
+jobs:
+  running-artifact:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: creates-artifact.yaml
+          run_id: ${{github.event.workflow_run.id}}
+          name: uploaded-artifact
+
+      - run: |
+          chmod +x myartifact
+          ./myartifact
